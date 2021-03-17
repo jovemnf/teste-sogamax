@@ -20,12 +20,21 @@ class _CameraPageState extends State<CameraPage> {
 
   List<CameraDescription> cameras;
 
+  _startShot () {
+
+  }
+
+  Future _initCameraController() async {
+
+  }
+
   @override
   void initState() {
     super.initState();
     availableCameras().then((value) {
       if (value.isNotEmpty) {
         controller = CameraController(value[0], ResolutionPreset.high);
+
         controller.initialize().then((_) {
           setState(() {
             _open = true;
