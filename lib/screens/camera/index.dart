@@ -2,10 +2,12 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
+import 'package:flutter/services.dart';
 import 'package:sogamax_canhotos/helpers/canhoto_helper.dart';
 import 'package:sogamax_canhotos/models/camera_argument.dart';
 import 'package:sogamax_canhotos/models/canhoto.dart';
 import 'package:sogamax_canhotos/models/imagem.dart';
+import 'package:camera_platform_interface/camera_platform_interface.dart';
 
 class CameraPage extends StatefulWidget {
   @override
@@ -30,6 +32,10 @@ class _CameraPageState extends State<CameraPage> {
 
   @override
   void initState() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp
+    ]);
+
     super.initState();
     availableCameras().then((value) {
       if (value.isNotEmpty) {
@@ -78,8 +84,11 @@ class _CameraPageState extends State<CameraPage> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: RotatedBox(
-        quarterTurns: MediaQuery.of(context).orientation == Orientation.landscape ? 3 : 0,
-        child: AspectRatio( aspectRatio: controller.value.aspectRatio, child: CameraPreview(controller), ),
+        quarterTurns: 0,
+        child: AspectRatio(
+          aspectRatio: controller.value.aspectRatio,
+          child: CameraPlatform.instance.buildPreview(controller.cameraId),
+        ),
       )
     );
   }

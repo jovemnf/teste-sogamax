@@ -1,16 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:toast/toast.dart';
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:sogamax_canhotos/components/buttom_arrow.dart';
-import 'package:camera_camera/camera_camera.dart';
-import 'package:sogamax_canhotos/helpers/canhoto_helper.dart';
 import 'package:sogamax_canhotos/models/camera_argument.dart';
-import 'package:sogamax_canhotos/models/canhoto.dart';
-import 'package:sogamax_canhotos/models/imagem.dart';
 
 
 class BarcodePage extends StatefulWidget {
@@ -63,11 +56,9 @@ class _BarcodePage extends State<BarcodePage> {
 
   @override
   Widget build(BuildContext context) {
-    /*
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp
-    ]);
-     */
+
+
+
     return Scaffold(
         appBar: AppBar(title: const Text('Barcode scan')),
         body: Center(
