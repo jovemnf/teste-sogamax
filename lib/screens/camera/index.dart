@@ -42,11 +42,13 @@ class _CameraPageState extends State<CameraPage> {
         controller = CameraController(value[0], ResolutionPreset.high);
 
         controller.initialize().then((_) {
+
           setState(() {
             _open = true;
           });
           new Future.delayed(const Duration(seconds: 3), () async {
             try {
+              await controller.lockCaptureOrientation();
               await controller.setFocusMode(FocusMode.auto);
               var value = await controller.takePicture();
               if (value != null) {
@@ -122,13 +124,11 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   _upload (XFile file, Canhoto value) {
-    /*
+
     Imagem().upload(file, value).then((_) {
       value.transmitido = true;
       CanhotoHelper().update(value);
     });
-
-     */
   }
 
 }

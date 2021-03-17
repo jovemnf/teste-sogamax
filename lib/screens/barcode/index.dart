@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:sogamax_canhotos/helpers/canhoto_helper.dart';
+import 'package:sogamax_canhotos/models/camera_argument.dart';
 import 'package:sogamax_canhotos/models/canhoto.dart';
 import 'package:sogamax_canhotos/models/imagem.dart';
 import 'package:toast/toast.dart';
@@ -67,7 +68,7 @@ class _BarcodePage extends State<BarcodePage> {
         body: Center(
           child:  _scanBarcode == null ? CircularProgressIndicator() : Text(_scanBarcode),
         ),
-        /*
+
         floatingActionButton: _scanBarcode != null ? FloatingActionButton(
           onPressed: () {
             Navigator.pushNamed(context, '/camera', arguments: CameraArguments(_scanBarcode),);
@@ -76,7 +77,7 @@ class _BarcodePage extends State<BarcodePage> {
           child: Icon(Icons.forward),
         ) : SizedBox()
 
-         */
+      /*
       floatingActionButton: FloatingActionButton(
         onPressed: (){
           Navigator.push(
@@ -94,9 +95,12 @@ class _BarcodePage extends State<BarcodePage> {
         },
         child: Icon(Icons.camera_alt),
       ),
+
+       */
     );
   }
 
+  /*
   _uploaded (File file) async {
     try {
       var c = await CanhotoHelper().get(_scanBarcode);
@@ -130,5 +134,5 @@ class _BarcodePage extends State<BarcodePage> {
       CanhotoHelper().update(value);
     });
   }
-
+   */
 }
