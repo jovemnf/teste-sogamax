@@ -122,10 +122,13 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   _upload (XFile file, Canhoto value) {
+    /*
     Imagem().upload(file, value).then((_) {
       value.transmitido = true;
       CanhotoHelper().update(value);
     });
+
+     */
   }
 
 }

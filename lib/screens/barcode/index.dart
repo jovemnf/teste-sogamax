@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:io';
+import 'package:sogamax_canhotos/helpers/canhoto_helper.dart';
+import 'package:sogamax_canhotos/models/canhoto.dart';
+import 'package:sogamax_canhotos/models/imagem.dart';
 import 'package:toast/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:sogamax_canhotos/models/camera_argument.dart';
-
+import 'package:camera_camera/camera_camera.dart';
 
 class BarcodePage extends StatefulWidget {
   @override
@@ -64,6 +67,7 @@ class _BarcodePage extends State<BarcodePage> {
         body: Center(
           child:  _scanBarcode == null ? CircularProgressIndicator() : Text(_scanBarcode),
         ),
+        /*
         floatingActionButton: _scanBarcode != null ? FloatingActionButton(
           onPressed: () {
             Navigator.pushNamed(context, '/camera', arguments: CameraArguments(_scanBarcode),);
@@ -71,7 +75,60 @@ class _BarcodePage extends State<BarcodePage> {
           tooltip: 'Increment',
           child: Icon(Icons.forward),
         ) : SizedBox()
+
+         */
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => Camera(
+                    onFile: (File file) {
+                      //When take foto you should close camera
+                      _uploaded(file);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      setState(() {});
+                    },
+                  )));
+        },
+        child: Icon(Icons.camera_alt),
+      ),
     );
+  }
+
+  _uploaded (File file) async {
+    try {
+      var c = await CanhotoHelper().get(_scanBarcode);
+
+      if (c != null) {
+        c.image = file.path;
+        c.data = DateTime.now().millisecondsSinceEpoch;
+
+        new CanhotoHelper().update(c).then((value) {
+          _upload(file, c);
+        });
+      } else {
+        var canhoto = new Canhoto(
+            image: file.path,
+            numero:  _scanBarcode,
+            transmitido: false,
+            data: DateTime.now().millisecondsSinceEpoch
+        );
+        new CanhotoHelper().insert(canhoto).then((value) {
+          _upload(file, value);
+        });
+      }
+    } catch (e) {
+      Toast.show(e.toString(), context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+    }
+  }
+
+  _upload (File file, Canhoto value) {
+    Imagem().upload(file, value).then((_) {
+      value.transmitido = true;
+      CanhotoHelper().update(value);
+    });
   }
 
 }
