@@ -77,7 +77,10 @@ class _CameraPageState extends State<CameraPage> {
     }
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: CameraPreview(controller),
+      home: AspectRatio(
+        aspectRatio: controller.value.aspectRatio,
+        child: CameraPreview(controller),
+      )
     );
   }
 
