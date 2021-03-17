@@ -77,9 +77,9 @@ class _CameraPageState extends State<CameraPage> {
     }
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AspectRatio(
-        aspectRatio: controller.value.aspectRatio,
-        child: CameraPreview(controller),
+      home: RotatedBox(
+        quarterTurns: MediaQuery.of(context).orientation == Orientation.landscape ? 3 : 0,
+        child: AspectRatio( aspectRatio: controller.value.aspectRatio, child: CameraPreview(controller), ),
       )
     );
   }
