@@ -51,7 +51,7 @@ class _BarcodePage extends State<BarcodePage> {
     setState(() {
       if (barcodeScanRes != "-1") {
         _scanBarcode = barcodeScanRes;
-        //Navigator.pushNamed(context, '/camera', arguments: CameraArguments(_scanBarcode),);
+        Navigator.pushNamed(context, '/camera', arguments: CameraArguments(_scanBarcode),);
       } else {
         _scanBarcode = null;
       }
