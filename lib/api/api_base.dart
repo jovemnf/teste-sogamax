@@ -3,7 +3,7 @@ import 'package:sogamax_canhotos/models/auth.dart';
 import '../helpers/me_helper.dart';
 
 class ApiBase {
-  String uri = "http://209.126.11.40:8000";
+  String uri = "http://canhotos.sogamax.com.br:9970";
 
   Future<Map<String, String>> getHeader ({Auth me = null}) async {
 

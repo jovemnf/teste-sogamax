@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sogamax_canhotos/helpers/canhoto_helper.dart';
+import 'package:sogamax_canhotos/helpers/me_helper.dart';
 import 'package:sogamax_canhotos/models/canhoto.dart';
 import 'package:sogamax_canhotos/screens/home/home_bloc.dart';
 
@@ -63,6 +64,30 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           ),
         ],
       ),
+
+      drawer: Drawer(
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Image.asset("assets/logo.png"),
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+            ),
+            ListTile(
+              title: Text('Sair'),
+              onTap: () {
+                AuthHelper().reset().then((value) {
+                  Navigator.pushReplacementNamed(context, '/login');
+                });
+              },
+            ),
+          ],
+        ),
+      ),
+
       body: StreamBuilder(
         stream: _bloc.stream,
         builder: (BuildContext context, snap) {

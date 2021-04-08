@@ -22,12 +22,6 @@ class _StartPageState extends State<StartPage> {
     } else {
       Navigator.pushReplacementNamed(context, '/login');
     }
-    //Navigator.pushReplacementNamed(context, '/home');
-    /*
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => HomePage()),
-    );
-     */
   }
 
   @override
