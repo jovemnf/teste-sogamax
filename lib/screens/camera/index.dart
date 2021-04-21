@@ -42,7 +42,7 @@ class _CameraPageState extends State<CameraPage> {
         controller = CameraController(value[0], ResolutionPreset.high);
 
         controller.initialize().then((_) {
-
+          cameraArguments = ModalRoute.of(context).settings.arguments;
           setState(() {
             _open = true;
           });
@@ -59,7 +59,11 @@ class _CameraPageState extends State<CameraPage> {
               }
 
               Navigator.pop(context);
-              Navigator.pop(context);
+
+              if (cameraArguments.step >= 2) {
+                Navigator.pop(context);
+              }
+
             } catch (e) {
               Toast.show(e.toString(), context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
             }
@@ -95,10 +99,12 @@ class _CameraPageState extends State<CameraPage> {
     );
   }
 
+  CameraArguments cameraArguments;
+
   _uploaded (XFile file) async {
     try {
-      final CameraArguments args = ModalRoute.of(context).settings.arguments;
-      var c = await CanhotoHelper().get(args.barcode);
+
+      var c = await CanhotoHelper().get(cameraArguments.barcode);
 
       if (c != null) {
         c.image = file.path;
@@ -110,7 +116,7 @@ class _CameraPageState extends State<CameraPage> {
       } else {
         var canhoto = new Canhoto(
             image: file.path,
-            numero:  args.barcode,
+            numero: int.parse(cameraArguments.barcode).toString(),
             transmitido: false,
             data: DateTime.now().millisecondsSinceEpoch
         );

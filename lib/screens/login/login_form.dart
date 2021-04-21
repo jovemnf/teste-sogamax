@@ -88,6 +88,7 @@ class LoginForm extends StatelessWidget {
                   ),
                   new Expanded(
                     child: TextFormField(
+                      autofocus: true,
                       controller: usernameController,
                       style: TextStyle(color: primaryColor),
                       focusNode: _usuarioFocus,

@@ -61,8 +61,6 @@ class _BarcodePage extends State<BarcodePage> {
   @override
   Widget build(BuildContext context) {
 
-
-
     return Scaffold(
         appBar: AppBar(title: const Text('Barcode scan')),
         body: Center(

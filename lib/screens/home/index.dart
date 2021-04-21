@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sogamax_canhotos/helpers/canhoto_helper.dart';
 import 'package:sogamax_canhotos/helpers/me_helper.dart';
+import 'package:sogamax_canhotos/models/camera_argument.dart';
 import 'package:sogamax_canhotos/models/canhoto.dart';
 import 'package:sogamax_canhotos/screens/home/home_bloc.dart';
+import 'package:sogamax_canhotos/screens/home/home_drawer.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -35,6 +37,56 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     _bloc.fetch();
   }
 
+  final TextEditingController numeroController = new TextEditingController();
+  final FocusNode _numeroFocus = FocusNode();
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Canhoto'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                TextFormField(
+                  autofocus: true,
+                  controller: numeroController,
+                  style: TextStyle(color: Colors.blue),
+                  keyboardType: TextInputType.number,
+                  focusNode: _numeroFocus,
+                  decoration: InputDecoration(
+                    hintText: 'Número do Canhoto',
+                    hintStyle: TextStyle(color: Colors.blue),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Tirar Foto'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                if (numeroController.text.isNotEmpty) {
+                  Navigator.pushNamed(context, '/camera', arguments: CameraArguments(numeroController.text, step: 1),);
+                  numeroController.text = "";
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -65,28 +117,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         ],
       ),
 
-      drawer: Drawer(
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              child: Image.asset("assets/logo.png"),
-              decoration: BoxDecoration(
-                color: Colors.white,
-              ),
-            ),
-            ListTile(
-              title: Text('Sair'),
-              onTap: () {
-                AuthHelper().reset().then((value) {
-                  Navigator.pushReplacementNamed(context, '/login');
-                });
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: HomeDrawer(),
 
       body: StreamBuilder(
         stream: _bloc.stream,
@@ -102,16 +133,35 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           return Center(child: CircularProgressIndicator());
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+      floatingActionButton: Stack(
+        children: [
+          Positioned(
+            bottom: 10,
+            right: 10,
+            child: FloatingActionButton(
+              heroTag: 'Icons.keyboard',
+              onPressed: _showMyDialog,
+              backgroundColor: Colors.red,
+              tooltip: 'Increment',
+              child: Icon(Icons.keyboard),
+            ),
+          ),
+          Positioned(
+            bottom: 90,
+            right: 10,
+            child: FloatingActionButton(
+              heroTag: 'Icons.camera_rear',
+              onPressed: _incrementCounter,
+              tooltip: 'Increment',
+              child: Icon(Icons.camera_rear),
+            ),
+          ),
+        ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
   _build (List<Canhoto> list) {
-    print("BUILD");
     return ListView.separated(
         separatorBuilder: (context, index) => Divider(
           color: Colors.black,
