@@ -20,7 +20,8 @@ class LoginForm extends StatelessWidget {
     this.buttonColor = Colors.blue,
     this.primaryColor = Colors.blue,
     this.backgroundColor = Colors.white,
-    this.logo, this.onPressed,
+    this.logo,
+    this.onPressed,
     this.usernameController,
     this.passwordController
   });

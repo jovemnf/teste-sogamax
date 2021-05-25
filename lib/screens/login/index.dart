@@ -30,6 +30,7 @@ class _LoginPageState extends State<LoginPage> {
           child: LoginForm(
             backgroundColor: Colors.white,
             logo: Image.asset("assets/logo.png"),
+            showLogo: true,
             onPressed: _onpressed,
             buttonColor: Colors.blue,
             primaryColor: Colors.blue,
@@ -47,18 +48,39 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         _saving = true;
       });
-      var res = await AuthApi().autentica(usernameControler.text, passwordControler.text);
 
+      var res = await AuthApi().autentica(usernameControler.text, passwordControler.text);
       var body = res.data;
 
-      await AuthHelper().reset();
-      await CanhotoHelper().reset();
-      await AuthHelper().insert(new Auth(body['nome'], body['access_token']));
-
-      Navigator.pushReplacementNamed(context, '/home');
       setState(() {
         _saving = false;
       });
+
+      print(body);
+
+      await AuthHelper().reset();
+      await CanhotoHelper().reset();
+
+      if (! body["permissao_canhotos"]["cadastrar"]) {
+        Toast.show("Sem permissão para cadastrar canhotos.", context,
+            duration: Toast.LENGTH_LONG,
+            gravity: Toast.TOP,
+            backgroundColor: Colors.red
+        );
+      } else {
+        await AuthHelper().insert(new Auth(
+            body['nome'],
+            body['access_token'],
+            cadastrar: body["permissao_canhotos"]["cadastrar"]
+        ));
+
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+
+      setState(() {
+        _saving = false;
+      });
+
     } on DioError catch(e) {
       print(e);
       setState(() {

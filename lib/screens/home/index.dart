@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sogamax_canhotos/helpers/canhoto_helper.dart';
 import 'package:sogamax_canhotos/helpers/me_helper.dart';
+import 'package:sogamax_canhotos/models/auth.dart';
 import 'package:sogamax_canhotos/models/camera_argument.dart';
 import 'package:sogamax_canhotos/models/canhoto.dart';
 import 'package:sogamax_canhotos/screens/home/home_bloc.dart';
@@ -16,11 +17,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   HomeBloc _bloc = HomeBloc();
 
+  Auth auth;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
     _bloc.fetch();
   }
 

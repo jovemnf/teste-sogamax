@@ -8,6 +8,7 @@ final String authTable = "auth_table";
 final String idColumn = "idColumn";
 final String nomeColumn = "nome";
 final String accessTokenColumn = "access_token";
+final String cadastrarColumn = "cadastrar";
 
 class AuthHelper {
 
@@ -37,7 +38,7 @@ class AuthHelper {
     List<Map> maps = await dbContact.query(
         authTable,
         columns: [
-          idColumn, nomeColumn, accessTokenColumn
+          idColumn, nomeColumn, accessTokenColumn, cadastrarColumn
         ],
         limit: 1
     );
@@ -57,7 +58,7 @@ class AuthHelper {
     List<Map> maps = await dbContact.query(
         authTable,
         columns: [
-          idColumn, nomeColumn, accessTokenColumn
+          idColumn, nomeColumn, accessTokenColumn, cadastrarColumn
         ],
         where: "$idColumn = ?",
         whereArgs: [1]
@@ -77,6 +78,7 @@ class AuthHelper {
         "CREATE TABLE $authTable ("
             "$idColumn INTEGER PRIMARY KEY, "
             "$nomeColumn TEXT,"
+            "$cadastrarColumn INT,"
             "$accessTokenColumn TEXT)"
     );
   }
