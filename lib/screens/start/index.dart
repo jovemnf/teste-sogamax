@@ -16,10 +16,14 @@ class _StartPageState extends State<StartPage> {
   }
 
   check () async {
-    var auth = await AuthHelper().get();
-    if (auth != null) {
-      Navigator.pushReplacementNamed(context, '/home');
-    } else {
+    try {
+      var auth = await AuthHelper().get();
+      if (auth != null) {
+        Navigator.pushReplacementNamed(context, '/home');
+      } else {
+        Navigator.pushReplacementNamed(context, '/login');
+      }
+    } catch (e) {
       Navigator.pushReplacementNamed(context, '/login');
     }
   }
